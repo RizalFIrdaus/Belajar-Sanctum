@@ -49,14 +49,18 @@ class AuthController extends Controller
                     'token' => $token
                 ]);
             }
-            return response()->json([
-                'status' => false,
-                'message' => 'Password tidak cocok'
-            ]);
+            return response()->error('Password tidak cocok');
         }
+        return response()->error('Email belum terdaftar');
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user()->tokens()->delete();
         return response()->json([
-            'status' => false,
-            'message' => 'Email belum terdaftar'
+            'status' => true,
+            'message' => 'Berhasil Logout',
+            'data' => $user
         ]);
     }
 }
